@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -27,13 +28,13 @@ public class Project {
     private String description;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties({"managedProjects", "tasks"})
     private User manager; // The manager assigned to this project
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnoreProperties({"project"})
     private List<Task> tasks; // Tasks under this project
 
     // Getters and Setters

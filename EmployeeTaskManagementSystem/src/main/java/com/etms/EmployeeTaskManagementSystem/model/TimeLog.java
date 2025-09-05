@@ -2,6 +2,8 @@ package com.etms.EmployeeTaskManagementSystem.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +20,11 @@ public class TimeLog {
     private Long id;
 
     @ManyToOne
+    @JsonIgnoreProperties({"timeLogs", "project", "assignedTo"})
     private Task task;
 
     @ManyToOne
+    @JsonIgnoreProperties({"managedProjects", "tasks"})
     private User user; // Employee logging time
 
     private LocalDateTime startTime;

@@ -3,6 +3,7 @@ package com.etms.EmployeeTaskManagementSystem.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -33,13 +34,22 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
     
     @OneToMany(mappedBy = "assignedTo")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"assignedTo", "project", "timeLogs"})
     private List<Task> tasks;
 
     @OneToMany(mappedBy = "manager")
-    @JsonManagedReference
+    @JsonIgnoreProperties({"manager", "tasks"})
     private List<Project> managedProjects;
     
+    public User() {
+		// TODO Auto-generated constructor stub
+	}
+	public User(Long id) {
+		this.id = id;
+	}
+
+	
+
 	public Long getId() {
 		return id;
 	}

@@ -5,6 +5,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import com.etms.EmployeeTaskManagementSystem.model.User;
+
 import java.security.Key;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,16 +25,26 @@ public class JwtUtil {
     public void init() {
         key = Keys.hmacShaKeyFor(secret.getBytes());
     }
-
-    public String generateToken(String username, String role) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(username)
-                .claim("role", role)
+                .setSubject(user.getEmail()) // or user.getUsername()
+                .claim("id", user.getId())
+                .claim("role", user.getRole().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
                 .compact();
     }
+//    public String generateToken(String username, String role) {
+//        return Jwts.builder()
+//                .setSubject(username)
+//                .claim("id", user.getId())
+//                .claim("role", role)
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+//                .signWith(key)
+//                .compact();
+//    }
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()

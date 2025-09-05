@@ -3,9 +3,12 @@ package com.etms.EmployeeTaskManagementSystem.controller;
 import com.etms.EmployeeTaskManagementSystem.model.User;
 import com.etms.EmployeeTaskManagementSystem.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,7 +36,13 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    //to fetch username in frontend
+    @GetMapping("/api/users/me")
+    public ResponseEntity<Optional<User>> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        Optional<User> user = userService.getUserByEmail(userDetails.getUsername());
+        return ResponseEntity.ok(user);
+    }
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

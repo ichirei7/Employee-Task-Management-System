@@ -2,7 +2,6 @@
 
 package com.etms.EmployeeTaskManagementSystem.dto;
 
-import com.etms.EmployeeTaskManagementSystem.validation.ValidRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

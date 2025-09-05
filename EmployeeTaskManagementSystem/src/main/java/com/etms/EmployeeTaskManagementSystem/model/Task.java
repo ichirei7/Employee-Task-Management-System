@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -36,11 +37,11 @@ public class Task {
     private LocalDate dueDate;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties({"tasks"})
     private Project project; // Project this task belongs to
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties({"tasks", "managedProjects"})
     private User assignedTo; // Employee assigned to this task
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -53,8 +54,18 @@ public class Task {
     public void setLastUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+  
 
-    // Getters and Setters
+    public Task() {
+		super();
+	}
+
+
+	public Task(Long id) {
+		this.id = id;
+	}
+
+	// Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

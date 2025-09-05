@@ -48,24 +48,40 @@ public class AuthController {
 
         userRepository.save(user);
 
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
-        return ResponseEntity.ok(new AuthResponse(token, user.getRole().name()));
+        String token = jwtUtil.generateToken(user);
+        AuthResponse response = new AuthResponse(token, user.getRole().name(), user.getId(), user.getName());
+        return ResponseEntity.ok(response);
     }
-
-    // LOGIN
+//
+//    // LOGIN
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getEmail(),
+//                        request.getPassword()
+//                )
+//        );
+//
+//        User user = userRepository.findByEmail(request.getEmail())
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+//        return ResponseEntity.ok(new AuthResponse(token, user.getRole().name()));
+//    }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
-        return ResponseEntity.ok(new AuthResponse(token, user.getRole().name()));
+        String token = jwtUtil.generateToken(user);
+
+        AuthResponse response = new AuthResponse(token, user.getRole().name(), user.getId(), user.getName());
+        return ResponseEntity.ok(response);
     }
+
 }

@@ -42,7 +42,8 @@ public class SecurityConfig {
         }))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login", "/auth/register").permitAll()
+            	 .requestMatchers("/**").permitAll()   // allow everything	FOR DEVELOPMENT ONLY
+//                .requestMatchers("/auth/login", "/auth/register").permitAll() //enable this back after DEV
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
             )

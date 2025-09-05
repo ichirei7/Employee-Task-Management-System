@@ -28,7 +28,11 @@ public class TaskService {
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
-
+    
+    public List <Task> getTasksByProjectId(Long projectId) {
+    	return taskRepository.findByProjectId(projectId);
+    }
+    
     public List<Task> getTasksByStatus(TaskStatus status) {
         return taskRepository.findByStatus(status);
     }

@@ -49,4 +49,21 @@ public class TimeLogController {
         timeLogService.deleteTimeLog(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/start")
+    public ResponseEntity<TimeLog> startTimer(@RequestParam Long taskId, @RequestParam Long userId) {
+
+
+        return ResponseEntity.ok(timeLogService.startTimer(taskId, userId));
+    }
+
+    @PutMapping("/{logId}/stop")
+    public ResponseEntity<TimeLog> stopTimer(@PathVariable Long logId) {
+        return ResponseEntity.ok(timeLogService.stopTimer(logId));
+    }
+    @GetMapping("/task/{taskId}/total")
+    public ResponseEntity<Integer> getTotalDurationByTask(@PathVariable Long taskId) {
+        Integer total = timeLogService.getTotalDurationByTask(taskId);
+        return ResponseEntity.ok(total != null ? total : 0);
+    }
+
 }
